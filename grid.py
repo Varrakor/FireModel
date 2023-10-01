@@ -170,14 +170,14 @@ def visualize(model):
 # Create and run the model
 width = 5
 height = 5
-tree_density = 1
+tree_density = 0.5
 num_firefighters = 1
 
 model = BushfireModel(width, height, tree_density, num_firefighters)
 
 # Input phase
 while True:  # Keep taking input until "start" is entered
-    user_input = input("Enter 'fire x, y' to start a fire, 'extinguish x, y' to put out a fire, or 'start' to begin the simulation: ")
+    user_input = input("Enter 'f x, y' to start a fire, 'e x, y' to put out a fire, or 'start' to begin the simulation: ")
     
     if user_input.strip().lower() == "start":
         break  # Exit the input loop and start the simulation
@@ -185,16 +185,18 @@ while True:  # Keep taking input until "start" is entered
     try:
         command, x, y = user_input.strip().split()
         x, y = int(x), int(y)
-        if command.lower() == "fire":
+        if command.lower() == "f":
+            print("started fire")
             model.ignite_tree(x, y)
-        elif command.lower() == "extinguish":
+        elif command.lower() == "e":
+            print("added firefighter")
             firefighter = FirefighterAgent(model.random.randint(1, 1e6), model)
             model.grid.place_agent(firefighter, (x, y))
             model.schedule.add(firefighter)
         else:
-            print("Invalid command. Please enter 'fire x, y', 'extinguish x, y', or 'start'.")
+            print("Invalid command. Please enter 'f x, y', 'e x, y', or 'start'.")
     except ValueError:
-        print("Invalid input format. Please enter commands as 'fire x, y', 'extinguish x, y', or 'start'.")
+        print("Invalid input format. Please enter commands as 'f x, y', 'e x, y', or 'start'.")
 
 # Simulation phase
 num_steps = 5  # Adjust the number of steps as needed
